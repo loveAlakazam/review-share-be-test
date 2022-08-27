@@ -17,7 +17,7 @@ const projectReqRouter = require("./routes/projectRequests");
 
 app.use("/user", userRouter);
 app.use("/prj", projectRouter);
-app.use("/prj/req", projectReqRouter);
+app.use("/req", projectReqRouter);
 
 // use mongodb connector
 const conn = require("./configs/mongodb");
