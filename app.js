@@ -19,6 +19,9 @@ app.use("/user", userRouter);
 app.use("/prj", projectRouter);
 app.use("/prj/req", projectReqRouter);
 
+// use mongodb connector
+const conn = require("./configs/mongodb");
+
 const PORT = process.env.PORT;
 http.createServer(app).listen(PORT, () => {
   console.log(`The Server started port ${PORT} ...`);
