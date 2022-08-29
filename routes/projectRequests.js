@@ -1,12 +1,8 @@
-const express = require("express");
-const { post } = require("./users").default;
-const router = express.Router();
-const mongoose = require("mongoose");
+import { Router } from "express";
 
-const { Users } = require("../models/Users");
-const { Projects } = require("../models/Projects");
-const { ProjectRequests } = require("../models/ProjectRequests");
+const router = Router();
 
+/*
 // 프로젝트 신청
 router.post("/", async (req, res) => {
   const userId = req.body.userId;
@@ -24,8 +20,8 @@ router.post("/", async (req, res) => {
     }
 
     const prjRequests = await ProjectRequests.find({
-      user: mongoose.Types.ObjectId(userId),
-      project: mongoose.Types.ObjectId(projectId),
+      user: Types.ObjectId(userId),
+      project: Types.ObjectId(projectId),
     }).exec();
 
     // console.log(prjRequests);
@@ -84,5 +80,6 @@ router.get("/my/list", (req, res) => {
 });
 
 // 프로젝트 신청 삭제
+*/
 
-module.exports = router;
+export default router;
