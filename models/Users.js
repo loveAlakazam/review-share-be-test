@@ -7,11 +7,9 @@ const userSchema = mongoose.Schema({
 });
 
 // [instance-method]
-// 유저의 requestCount를 높입니다.
-userSchema.methods.plusRequestCount = function (cb) {};
 
 userSchema.statics.addUser = function (newUser, cb) {
-  Users.create(
+  this.create(
     {
       nickname: newUser.nickname,
       birthOfYears: newUser.birth_of_years,
