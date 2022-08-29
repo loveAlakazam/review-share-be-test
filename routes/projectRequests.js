@@ -1,5 +1,5 @@
 const express = require("express");
-const { post } = require("./users");
+const { post } = require("./users").default;
 const router = express.Router();
 const mongoose = require("mongoose");
 

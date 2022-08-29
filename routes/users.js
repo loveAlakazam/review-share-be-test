@@ -1,7 +1,7 @@
-const express = require("express");
-const router = express.Router();
+import { Router } from "express";
+import { Users } from "../models/Users";
 
-const { Users } = require("../models/Users");
+const router = Router();
 
 // 유저 조회
 router.get("/", (req, res) => {
@@ -57,4 +57,4 @@ router.post("/", (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;
