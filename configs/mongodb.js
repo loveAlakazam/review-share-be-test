@@ -1,15 +1,21 @@
-const dotenv = require("dotenv");
-const path = require("path");
-const mongoose = require("mongoose");
-dotenv.config({ path: path.join(__dirname, "./.env") });
+import mongoose from "mongoose";
+import { config } from "dotenv";
+import { join } from "path";
 
-const conn = mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log("review share mongodb connected....");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+config({ path: join(__dirname, "./.env") });
 
-module.exports = conn;
+const handleOpen = () => {
+  console.log("✅ Success to connect mongodb");
+};
+const handleError = (error) => {
+  console.log("❌ Error Connection: ", error);
+};
+
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+db.on("error", handleError);
+db.once("open", handleOpen);

@@ -1,53 +1,53 @@
-import { Users } from "../models/Users";
+import Users from "../models/Users";
 
-export const showUserInfo = (req, res) => {
-  const user_id = req.query.id;
-
-  Users.getUserById(user_id, (err, user) => {
-    try {
-      if (!user) {
-        res.status(404).json({ code: 404, message: "User not found" });
-      }
-
-      res.status(200).json({ code: 200, data: user });
-    } catch (err) {
-      res.status(500).json({
-        code: 500,
-        message: "Internal Server Error",
-        description: err,
-      });
-    }
-  });
+export const showUserById = async (req, res) => {
+  try {
+    const { userId } = req.query;
+    const userData = await Users.findById(userId);
+    res.status(200).json({ user: userData });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", description: error });
+  }
 };
 
-export const createNewUser = (req, res) => {
-  const nickname = req.body.nickname;
-  const birth_of_years = req.body.birth_of_years;
+export const createNewUser = async (req, res) => {
+  try {
+    const { nickname, birth_of_years } = req.body;
+    const newUser = await Users.create({
+      nickname,
+      birthOfYears: birth_of_years,
+    });
 
-  const newUser = {
-    nickname: nickname,
-    birth_of_years: birth_of_years,
-  };
+    res.status(200).json({
+      userId: newUser._id,
+    });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", description: error });
+  }
+};
 
-  Users.addUser(newUser, (err) => {
-    try {
-      if (!nickname || !birth_of_years) {
-        res.status(400).json({ code: 400, message: "Bad Request" });
-        return;
-      }
+export const updateUserInfo = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", description: error });
+  }
+};
 
-      if (isNaN(birth_of_years)) {
-        res.status(400).json({ code: 400, message: "Bad Request (is NaN)" });
-        return;
-      }
-
-      res.status(200).json({ code: 200 });
-    } catch (err) {
-      res.status(500).json({
-        code: 500,
-        message: "internal server error",
-        description: err,
-      });
-    }
-  });
+export const deleteUserById = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", description: error });
+  }
 };
