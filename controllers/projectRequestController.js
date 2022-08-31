@@ -19,7 +19,18 @@ export const createPrjRequest = async (req, res) => {
     }
 
     const user = await Users.findById(userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "현재 요청한 user가 존재하지 않습니다." });
+    }
+
     const project = await Projects.findById(projectId);
+    if (!project) {
+      return res
+        .status(404)
+        .json({ message: "현재 요청한 project가 존재하지 않습니다." });
+    }
 
     // 1-2. Project.requestUserList에 해당 UserId가 있는지 확인합니다.
     const isAlreadyContainUserId = project.requestUserList.includes(userId);
@@ -30,6 +41,12 @@ export const createPrjRequest = async (req, res) => {
     }
 
     // 2. User가 해당 Project의 SNS를 가지고 있는지 확인합니다.
+    if (!user.snsList) {
+      return res.status(400).json({
+        message: "현재 요청한 신청자는 sns를 갖고 있지 않습니다.",
+      });
+    }
+
     const havePrjSNS = user.snsList.includes(project.sns);
     if (!havePrjSNS) {
       return res.status(400).json({

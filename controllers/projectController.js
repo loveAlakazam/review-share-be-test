@@ -1,5 +1,6 @@
 import Projects from "../models/Projects";
 import ProjectRequests from "../models/ProjectRequests";
+import Users from "../models/Users";
 
 export const getProjectInfo = async (req, res) => {
   try {
@@ -112,12 +113,31 @@ export const deleteProject = async (req, res) => {
       });
     }
 
+    const projectRequestList = await ProjectRequests.find({ project: id });
+    console.log(projectRequestList);
+    if (projectRequestList.length) {
+      projectRequestList.map(async (prjReq) => {
+        const userId = prjReq.user;
+        const user = await Users.findById(userId);
+        if (!user) {
+          return res.status(404).json({ message: "유저가 존재하지 않습니다!" });
+        }
+
+        // 해당프로젝트를 요청한 각 유저의 requestCounts를 감소시킵니다.
+        // (단, requestCountst가 0이면 감소를 하지 않습니다.)
+        if (user.requestCounts > 0) {
+          user.requestCounts -= 1;
+          user.save();
+        }
+      });
+
+      // project가 projectId인 ProjectRequest 들도 같이 삭제
+      await ProjectRequests.deleteMany({ project: id });
+    }
+
     // 해당 projectId의 Project 삭제
     await Projects.deleteOne({ _id: id });
-
-    // project가 projectId인 ProjectRequest 들도 같이 삭제
-    await ProjectRequests.deleteMany({ project: id });
-    return res.status(200).end();
+    res.status(200).end();
   } catch (error) {
     console.log(error);
     res.status(500).json({

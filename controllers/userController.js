@@ -1,5 +1,7 @@
 import Users from "../models/Users";
 import mongoose from "mongoose";
+import ProjectRequests from "../models/ProjectRequests";
+import Projects from "../models/Projects";
 
 export const showUserById = async (req, res) => {
   try {
@@ -106,8 +108,48 @@ export const updateSnsList = async (req, res) => {
 
 export const deleteUserById = async (req, res) => {
   try {
-    // projectRequest 에서 해당 유저아이디를 삭제합니다.
-    // project의 requestUserList 에서 해당 유저아이디를 삭제합니다.
+    const { id } = req.params;
+
+    if (!id) {
+      return res
+        .status(400)
+        .json({ message: "userId 데이터가 누락되었습니다." });
+    }
+
+    const user = Users.findById(id);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "해당 아이디의 유저를 찾을 수 없습니다." });
+    }
+
+    let query = { user: id };
+    const prjReqList = await ProjectRequests.find(query);
+    if (prjReqList.length) {
+      // 해당 유저아이디가 포함되어있는 projectRequest들을 삭제합니다.
+      await ProjectRequests.deleteMany({ user: id });
+    }
+
+    // project의 requestUserList 에서 해당 유저아이디를 제외시킵니다.
+    query = { requestUserList: { $in: [id] } };
+    const prjList = await Projects.find(query);
+    if (prjList.length) {
+      prjList.map((prj) => {
+        // 각 프로젝트 정보에서 requestUserList 에서 탈퇴유저아이디를 제외시킵니다.
+        const _prjReqUserList = prj.requestUserList;
+        prj.requestUserList = _prjReqUserList.filter((userId) => {
+          // == (Equal Operator)을 사용하여
+          // userId(type: ObjectId) 와 id(string) 데이터타입 상관없이 값자체만으로 비교합니다
+          return userId != id;
+        });
+        prj.save();
+      });
+    }
+
+    // 해당 유저를 삭제합니다.
+    await Users.deleteOne({ _id: id });
+
+    res.status(200).end();
   } catch (error) {
     console.log(error);
     return res

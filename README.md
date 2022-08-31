@@ -40,7 +40,7 @@ $ npm run start
 |              Create New User              |    POST     |   /user/create   |   ✅   |
 |           Update User SNS List            |     PUT     | /user/update/sns |   ✅   |
 | Update User Info <br> (nickname, snsList) |     PUT     | /user/update/:id |   ✅   |
-|                Delete User                |   DELETE    | /user/delete/:id |        |
+|                Delete User                |   DELETE    | /user/delete/:id |   ✅   |
 
 <br>
 
@@ -52,6 +52,10 @@ $ npm run start
 |    Create New Project     |    POST     |   /project/create   |   ✅   |
 |      Update Project       |     PUT     | /project/update/:id |   ✅   |
 |      Delete Project       |   DELETE    | /project/delete/:id |   ✅   |
+
+<br><br>
+
+## Responses
 
 <br>
 <br>
