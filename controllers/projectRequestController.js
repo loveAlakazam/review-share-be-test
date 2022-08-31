@@ -97,8 +97,7 @@ export const deletePrjRequest = async (req, res) => {
     const project = await Projects.findById(projectId);
     const user = await Users.findById(userId);
 
-    console.log(project.requestUserList);
-    const filtered = project.requestUserList.filter((e) => e !== user.id);
+    project.requestUserList.filter((e) => e !== user.id);
     console.log(filtered);
 
     // 3. User의 requestCounts를 낮춰줍니다.
