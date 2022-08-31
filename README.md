@@ -36,8 +36,8 @@ $ npm run start
 
 |                  API 명                   | HTTP Method |     API URL      | Status |
 | :---------------------------------------: | :---------: | :--------------: | :----: |
+|              Read User By Id              |     GET     |      /user/      |   ✅   |
 |              Create New User              |    POST     |   /user/create   |   ✅   |
-|              Show User By Id              |     GET     |      /user/      |   ✅   |
 |           Update User SNS List            |     PUT     | /user/update/sns |   ✅   |
 | Update User Info <br> (nickname, snsList) |     PUT     | /user/update/:id |   ✅   |
 |                DeleteUser                 |   DELETE    | /user/delete/:id |        |
@@ -46,13 +46,12 @@ $ npm run start
 
 ### 3. Projects
 
-|                  API 명                   | HTTP Method |       API URL       | Status |
-| :---------------------------------------: | :---------: | :-----------------: | :----: |
-|            Create New Project             |    POST     |      /project/      |   ✅   |
-|              Show User By Id              |     GET     |      /project/      |   ✅   |
-|           Update User SNS List            |     PUT     | /project/update/sns |   ✅   |
-| Update User Info <br> (nickname, snsList) |     PUT     | /project/update/:id |   ✅   |
-|                                           |   DELETE    | /project/delete/:id |        |
+|          API 명           | HTTP Method |       API URL       | Status |
+| :-----------------------: | :---------: | :-----------------: | :----: |
+| Read Project By projectId |     GET     |    /project/:id     |        |
+|    Create New Project     |    POST     |   /project/create   |        |
+|      Update Project       |     PUT     | /project/update/:id |        |
+|      Delete Project       |   DELETE    | /project/delete/:id |        |
 
 <br>
 <br>
@@ -93,6 +92,8 @@ Javascript에서의 TDD 모듈인 Jest의 공식다큐먼트를 읽고 과제물
 
 스스로 시도해보지 못한 개발스택을 직접 부딪히면서 배울 수 있었습니다.
 과제를 풀어 봄으로써 개발에 몰입할 수 있는 기회를 준 리뷰쉐어 개발팀에게 진심으로 감사를 표합니다 :)
+
+<br>
 
 (💌 P.S)
 과제물을 확인하시면, 담당자님께서 제 코드를 리뷰해주셨으면 좋겠습니다.
