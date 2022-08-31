@@ -52,7 +52,7 @@ export const createNewProject = async (req, res) => {
       sns,
     });
 
-    return res.status(200).end();
+    return res.status(204).end();
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -87,7 +87,7 @@ export const updateProject = async (req, res) => {
 
     await Projects.updateOne({ _id: id }, { $set: { title: title, sns: sns } });
 
-    return res.status(200).end();
+    return res.status(204).end();
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -137,7 +137,7 @@ export const deleteProject = async (req, res) => {
 
     // 해당 projectId의 Project 삭제
     await Projects.deleteOne({ _id: id });
-    res.status(200).end();
+    res.status(204).end();
   } catch (error) {
     console.log(error);
     res.status(500).json({

@@ -65,7 +65,7 @@ export const updateUserInfo = async (req, res) => {
     user.snsList = _snsList;
     user.save();
 
-    res.status(200).end();
+    res.status(204).end();
   } catch (error) {
     console.log(error);
     return res
@@ -97,7 +97,7 @@ export const updateSnsList = async (req, res) => {
       { $push: { snsList: { $each: _snsList } } }
     );
 
-    res.status(200).end();
+    res.status(204).end();
   } catch (error) {
     console.log(error);
     return res
@@ -149,7 +149,7 @@ export const deleteUserById = async (req, res) => {
     // 해당 유저를 삭제합니다.
     await Users.deleteOne({ _id: id });
 
-    res.status(200).end();
+    res.status(204).end();
   } catch (error) {
     console.log(error);
     return res
