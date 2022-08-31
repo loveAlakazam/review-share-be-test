@@ -10,7 +10,7 @@ import {
 const router = Router();
 
 // 유저 생성
-router.post("/", createNewUser);
+router.post("/create", createNewUser);
 
 // 유저 정보 수정
 router.put("/update/sns", updateSnsList);

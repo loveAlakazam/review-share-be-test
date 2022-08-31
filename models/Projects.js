@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 const projectSchema = new mongoose.Schema({
-  title: String,
-  sns: { type: String, enum: ["NaverBlog", "Instagram"] },
+  title: { type: String, required: true },
+  sns: { type: String, enum: ["NaverBlog", "Instagram"], required: true },
   requestUserList: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
 
