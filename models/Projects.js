@@ -6,5 +6,11 @@ const projectSchema = new mongoose.Schema({
   requestUserList: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
 
+const SNS_LIST = ["Instagram", "NaverBlog"];
+
+projectSchema.statics.checkProjectSNS = (inputProjectSNS) => {
+  return SNS_LIST.includes(inputProjectSNS);
+};
+
 const Projects = mongoose.model("projects", projectSchema);
 export default Projects;

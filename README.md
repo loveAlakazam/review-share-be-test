@@ -40,7 +40,7 @@ $ npm run start
 |              Create New User              |    POST     |   /user/create   |   ✅   |
 |           Update User SNS List            |     PUT     | /user/update/sns |   ✅   |
 | Update User Info <br> (nickname, snsList) |     PUT     | /user/update/:id |   ✅   |
-|                DeleteUser                 |   DELETE    | /user/delete/:id |        |
+|                Delete User                |   DELETE    | /user/delete/:id |        |
 
 <br>
 
@@ -48,10 +48,10 @@ $ npm run start
 
 |          API 명           | HTTP Method |       API URL       | Status |
 | :-----------------------: | :---------: | :-----------------: | :----: |
-| Read Project By projectId |     GET     |    /project/:id     |        |
-|    Create New Project     |    POST     |   /project/create   |        |
-|      Update Project       |     PUT     | /project/update/:id |        |
-|      Delete Project       |   DELETE    | /project/delete/:id |        |
+| Read Project By projectId |     GET     |    /project/:id     |   ✅   |
+|    Create New Project     |    POST     |   /project/create   |   ✅   |
+|      Update Project       |     PUT     | /project/update/:id |   ✅   |
+|      Delete Project       |   DELETE    | /project/delete/:id |   ✅   |
 
 <br>
 <br>
