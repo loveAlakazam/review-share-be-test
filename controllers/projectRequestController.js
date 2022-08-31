@@ -103,21 +103,26 @@ export const deletePrjRequest = async (req, res) => {
         .json({ message: "ProjectRequest가 존재하지 않습니다." });
     }
 
-    console.log(targetPrjRequest);
-
     // 1. ProjectRequest 를 삭제합니다.
-    // await ProjectRequests.deleteOne({
-    //   _id: targetPrjRequest.id,
-    // });
+    await ProjectRequests.deleteOne({
+      _id: targetPrjRequest._id,
+    });
 
     // 2. 해당 Project의 requestUserList에서 UserId를 삭제합니다.
-    const project = await Projects.findById(projectId);
     const user = await Users.findById(userId);
 
-    project.requestUserList.filter((e) => e !== user.id);
-    console.log(filtered);
+    await Projects.updateOne(
+      { _id: projectId },
+      { $pull: { requestUserList: { $eq: userId } } }
+    );
 
     // 3. User의 requestCounts를 낮춰줍니다.
+    if (user.requestCounts > 0) {
+      await Users.updateOne(
+        { _id: userId },
+        { $set: { requestCounts: user.requestCounts - 1 } }
+      );
+    }
 
     // 4. 삭제가 완료되면 204응답 상태로 보냅니다.
     res.status(204).end();
