@@ -92,10 +92,8 @@ export const updateSnsList = async (req, res) => {
     }
 
     // snsList 컬럼 업데이트
-    await Users.updateOne(
-      { _id: userId },
-      { $push: { snsList: { $each: _snsList } } }
-    );
+
+    await Users.updateOne({ _id: userId }, { snsList: _snsList });
 
     res.status(204).end();
   } catch (error) {

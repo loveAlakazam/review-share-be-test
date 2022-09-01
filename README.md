@@ -24,11 +24,11 @@ $ npm run start
 
 ### 1. ProjectRequests (Review-Share 과제 API)
 
-|         API 명         | HTTP Method |    API URL    | Status |
-| :--------------------: | :---------: | :-----------: | :----: |
-| Create ProjectRequests |    POST     |  /req/create  |   ✅   |
-| Delete ProjectRequests |   DELETE    |  /req/delete  |        |
-|  Read ProjectRequests  |     GET     | /req/list/:id |        |
+|         API 명         | HTTP Method |   API URL   | Status |
+| :--------------------: | :---------: | :---------: | :----: |
+| Create ProjectRequests |    POST     | /req/create |   ✅   |
+| Delete ProjectRequests |   DELETE    | /req/delete |   ✅   |
+|  Read ProjectRequests  |     GET     |  /req/list  |        |
 
 <br>
 

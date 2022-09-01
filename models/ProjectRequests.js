@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import Users from "./Users";
+import Projects from "./Projects";
 
 const projectRequestSchema = mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
@@ -11,5 +13,9 @@ const projectRequestSchema = mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-const ProjectRequests = mongoose.model("projectrequests", projectRequestSchema);
+const ProjectRequests = mongoose.model(
+  "ProjectRequest",
+  projectRequestSchema,
+  "projectrequests"
+);
 export default ProjectRequests;

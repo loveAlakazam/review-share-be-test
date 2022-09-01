@@ -85,8 +85,6 @@ export const createPrjRequest = async (req, res) => {
   }
 };
 
-export const readPrjRequest = async (req, res) => {};
-
 export const deletePrjRequest = async (req, res) => {
   try {
     const { userId, projectId } = req.body;
@@ -126,6 +124,36 @@ export const deletePrjRequest = async (req, res) => {
 
     // 4. 삭제가 완료되면 204응답 상태로 보냅니다.
     res.status(204).end();
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", description: error });
+  }
+};
+
+export const readPrjRequest = async (req, res) => {
+  try {
+    const { userId } = req.query;
+    if (!userId) {
+      return res.status(400).json({ message: "userId가 존재하지 않습니다" });
+    }
+
+    // 1. 최신 신청 순으로 정렬합니다.
+    let _list = [];
+    const prjRequestList = await ProjectRequests.find({ user: userId })
+      .sort({
+        createdAt: -1,
+      })
+      .populate(ProjectRequests.project)
+      .exec();
+
+    console.log(prjRequestList);
+
+    res.status(200).json({
+      totalCounts: prjRequestList.length,
+      list: _list,
+    });
   } catch (error) {
     console.log(error);
     return res

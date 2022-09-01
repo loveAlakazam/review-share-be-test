@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Users from "./Users";
 
 const projectSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -12,5 +13,5 @@ projectSchema.statics.checkProjectSNS = (inputProjectSNS) => {
   return SNS_LIST.includes(inputProjectSNS);
 };
 
-const Projects = mongoose.model("projects", projectSchema);
+const Projects = mongoose.model("Project", projectSchema, "projects");
 export default Projects;
