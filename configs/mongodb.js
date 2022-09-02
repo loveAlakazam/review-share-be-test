@@ -19,3 +19,5 @@ mongoose.connect(process.env.MONGODB_URI, {
 const db = mongoose.connection;
 db.on("error", handleError);
 db.once("open", handleOpen);
+
+export default db;

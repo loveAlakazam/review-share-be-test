@@ -8,7 +8,6 @@ const userSchema = new mongoose.Schema({
 });
 
 const SNS_LIST = ["Instagram", "NaverBlog"];
-const NOW_YEAR = new Date().getFullYear();
 
 userSchema.statics.checkSnsList = (inputSnsStr) => {
   let splitInputSNSList = inputSnsStr.split(",").map((e) => e.trim());
@@ -22,13 +21,6 @@ userSchema.statics.checkSnsList = (inputSnsStr) => {
   });
 
   return filteredList;
-};
-
-// 유저의 연령대를 알아냅니다.
-userSchema.statics.getUserAge = (userBirthYear) => {
-  const age = NOW_YEAR - userBirthYear;
-  if (age > 0) return age;
-  return 0;
 };
 
 const Users = mongoose.model("User", userSchema, "users");

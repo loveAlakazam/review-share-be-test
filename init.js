@@ -1,12 +1,12 @@
 // import database & models
-import "./configs/mongodb";
-import "./models/Users";
-import "./models/Projects";
-import "./models/ProjectRequests";
+import "./configs/mongodb.js";
+import "./models/Users.js";
+import "./models/Projects.js";
+import "./models/ProjectRequests.js";
 
 import { join } from "path";
 import { config } from "dotenv";
-import app from "./app";
+import app from "./app.js";
 
 // use dotenv(.env)
 config({ path: join(__dirname, "./configs/.env") });
