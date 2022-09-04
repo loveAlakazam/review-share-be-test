@@ -1,0 +1,17 @@
+name: Test Deploy Github Action
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  deployment:
+    runs-on: macos-latest
+    environment: production
+    concurrency: production
+    steps:
+      - name: deploy
