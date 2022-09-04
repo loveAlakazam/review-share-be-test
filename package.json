@@ -6,7 +6,7 @@
   "scripts": {
     "babel-node": "babel-node --presets='@babel/preset-env' --ignore='foo|bar|baz'",
     "start": "nodemon --exec babel-node init.js",
-    "test": "jest"
+    "test": "nodemon --exec babel-node init.js"
   },
   "dependencies": {
     "body-parser": "^1.20.0",
