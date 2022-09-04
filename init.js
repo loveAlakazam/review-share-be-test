@@ -12,7 +12,7 @@ import app from "./app.js";
 config({ path: join(__dirname, "./configs/.env") });
 
 // run server
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 const runServerHandling = () => {
   console.log(`✅ The Server started port ${PORT} ...`);
 };

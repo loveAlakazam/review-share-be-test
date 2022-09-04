@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { config } from "dotenv";
-import { join } from "path";
-
+import { MONGODB_URI_PROD } from "./prod";
+import { MONGODB_URI_DEV } from "./dev";
 config({ path: join(__dirname, "./.env") });
 
 const handleOpen = () => {
@@ -11,11 +11,15 @@ const handleError = (error) => {
   console.log("❌ Error Connection: ", error);
 };
 
-mongoose.connect(process.env.MONGODB_URI, {
+let MONGODB_URI = MONGODB_URI_PROD;
+if (process.env.NODE_ENV === "dev") {
+  MONGODB_URI = MONGODB_URI_DEV;
+}
+
+mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-
 const db = mongoose.connection;
 db.on("error", handleError);
 db.once("open", handleOpen);
