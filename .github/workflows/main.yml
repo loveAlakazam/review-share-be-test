@@ -1,0 +1,28 @@
+name: Review Share Test CI & CD Github Actions
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        node-version: "14"
+
+    # Steps represent a sequence of tasks that will be executed as part of job
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{matrix.node-version}}
+
+      - name: Install dependencies
+        run: npm install
+      - run: npm run build --if-present
+      - run: npm run test
