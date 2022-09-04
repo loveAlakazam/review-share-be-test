@@ -12,7 +12,10 @@ import app from "./app.js";
 config({ path: join(__dirname, "./configs/.env") });
 
 // run server
-const PORT = process.env.PORT || 3000;
+let PORT = 6500;
+if (process.env.NODE_ENV === "dev") {
+  PORT = process.env.PORT;
+}
 const runServerHandling = () => {
   console.log(`✅ The Server started port ${PORT} ...`);
 };
