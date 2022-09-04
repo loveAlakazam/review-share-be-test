@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { config } from "dotenv";
+import { join } from "path";
 import { MONGODB_URI_PROD } from "./prod";
 import { MONGODB_URI_DEV } from "./dev";
 config({ path: join(__dirname, "./.env") });
