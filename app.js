@@ -17,8 +17,8 @@ app.use(urlencoded({ extended: false }));
 app.use(json());
 
 // routers
-app.use("/user", userRouter);
-app.use("/prj", projectRouter);
-app.use("/req", projectReqRouter);
+app.use("/users", userRouter);
+app.use("/prjs", projectRouter);
+app.use("/reqs", projectReqRouter);
 
 export default app;

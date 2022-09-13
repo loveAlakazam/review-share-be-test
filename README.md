@@ -33,11 +33,11 @@ $ npm run start
 
 - 🔧 코드리뷰 이후 API URL 수정 (2022.09.13)
 
-|         API 명         | HTTP Method |   API URL   |
-| :--------------------: | :---------: | :---------: |
-| Create ProjectRequests |    POST     | /req/create |
-| Delete ProjectRequests |   DELETE    | /req/delete |
-|  Read ProjectRequests  |     GET     |  /req/list  |
+|         API 명         | HTTP Method |  API URL  |
+| :--------------------: | :---------: | :-------: |
+| Create ProjectRequests |    POST     |   /req/   |
+| Delete ProjectRequests |   DELETE    |   /req/   |
+|  Read ProjectRequests  |     GET     | /req/list |
 
 <br><br>
 
@@ -80,12 +80,12 @@ $ npm run start
 
 - 🔧 코드리뷰 이후 API URL 수정 (2022.09.13)
 
-|          API 명           | HTTP Method |       API URL       |
-| :-----------------------: | :---------: | :-----------------: |
-| Read Project By projectId |     GET     |    /project/:id     |
-|    Create New Project     |    POST     |   /project/create   |
-|      Update Project       |     PUT     | /project/update/:id |
-|      Delete Project       |   DELETE    | /project/delete/:id |
+|          API 명           | HTTP Method |   API URL    |
+| :-----------------------: | :---------: | :----------: |
+| Read Project By projectId |     GET     | /project/:id |
+|    Create New Project     |    POST     |  /project/   |
+|      Update Project       |     PUT     | /project/:id |
+|      Delete Project       |   DELETE    | /project/:id |
 
 <br><br>
 
