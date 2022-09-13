@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { MONGODB_URI_PROD } from "./prod";
 import { MONGODB_URI_DEV } from "./dev";
 import { config } from "dotenv";
 import { join } from "path";
@@ -12,7 +11,7 @@ const handleError = (error) => {
   console.log("❌ Error Connection: ", error);
 };
 
-let MONGODB_URI = MONGODB_URI_PROD;
+let MONGODB_URI = process.env.MONGODB_URI;
 if (process.env.NODE_ENV === "dev") {
   MONGODB_URI = MONGODB_URI_DEV;
 }
