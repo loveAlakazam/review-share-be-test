@@ -9,13 +9,13 @@ import {
 const router = express.Router();
 
 // 프로젝트 생성
-router.post("/create", createNewProject);
+router.post("/", createNewProject);
 
 // 프로젝트 수정
-router.put("/update/:id", updateProject);
+router.put("/:id", updateProject);
 
 // 프로젝트 삭제
-router.delete("/delete/:id", deleteProject);
+router.delete("/:id", deleteProject);
 
 // 프로젝트 조회
 router.get("/:id", getProjectInfo);
