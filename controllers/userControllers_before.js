@@ -3,41 +3,39 @@ import mongoose from "mongoose";
 import ProjectRequests from "../models/ProjectRequests";
 import Projects from "../models/Projects";
 
-import * as service from "../service/users";
-
-export const showUserByIdController = async (req, res) => {
+export const showUserById = async (req, res) => {
   try {
     const { userId } = req.query;
-    const userData = await service.showUserById(userId);
-
-    if (!userData) {
-      return res.status(404).json({ message: "유저가 존재하지 않습니다." });
-    }
-
-    return res.status(200).json({ user: userData });
+    const userData = await Users.findById(userId);
+    res.status(200).json({ user: userData });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Internal Server Error", description: error });
-  }
-};
-
-export const createNewUserController = async (req, res) => {
-  try {
-    const { nickname, birthOfYears } = req.body;
-    const newUser = await service.createNewUser(nickname, birthOfYears);
-
-    return res.status(200).json({
-      userId: newUser._id,
-    });
-  } catch (error) {
+    console.log(error);
     res
       .status(500)
       .json({ message: "Internal Server Error", description: error });
   }
 };
 
-export const updateUserInfoController = async (req, res) => {
+export const createNewUser = async (req, res) => {
+  try {
+    const { nickname, birth_of_years } = req.body;
+    const newUser = await Users.create({
+      nickname,
+      birthOfYears: birth_of_years,
+    });
+
+    res.status(200).json({
+      userId: newUser._id,
+    });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", description: error });
+  }
+};
+
+export const updateUserInfo = async (req, res) => {
   try {
     const { id } = req.params;
     const { snsList, nickname } = req.body;
@@ -48,28 +46,26 @@ export const updateUserInfoController = async (req, res) => {
         .json({ message: "유저 아이디 값이 존재하지 않습니다." });
     }
 
-    if (!snsList) {
-      return res.status(400).json({ message: "snsList를 입력해주세요!" });
+    if (!snsList || !nickname) {
+      return res
+        .status(400)
+        .json({ message: "snsList와 nickname 모두 입력해주세요!" });
     }
 
-    if (!nickname) {
-      return res.status(400).json({ message: "nickname를 입력해주세요!" });
+    const _snsList = Users.checkSnsList(snsList);
+
+    if (!_snsList.length) {
+      return res.status(404).json({
+        message: "snsList는 Instagram 또는 NaverBlog를 입력해주세요!",
+      });
     }
 
-    // const _snsList = Users.checkSnsList(snsList);
-    // if (!_snsList.length) {
-    //   return res.status(404).json({
-    //     message: "snsList는 Instagram 또는 NaverBlog를 입력해주세요!",
-    //   });
-    // }
+    const user = await Users.findById(id);
+    user.nickname = nickname;
+    user.snsList = _snsList;
+    user.save();
 
-    // const user = await Users.findById(id);
-    const errorMsg = await service.updateUserInfo(id, snsList, nickname);
-    if (errorMsg) {
-      return res.status(400).json(errorMsg);
-    }
-
-    return res.status(204).end();
+    res.status(204).end();
   } catch (error) {
     console.log(error);
     return res
@@ -78,7 +74,7 @@ export const updateUserInfoController = async (req, res) => {
   }
 };
 
-export const updateSnsListController = async (req, res) => {
+export const updateSnsList = async (req, res) => {
   try {
     const { userId, snsList } = req.body;
     console.log(userId, snsList);
@@ -108,7 +104,7 @@ export const updateSnsListController = async (req, res) => {
   }
 };
 
-export const deleteUserByIdController = async (req, res) => {
+export const deleteUserById = async (req, res) => {
   try {
     const { id } = req.params;
 
