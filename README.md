@@ -61,9 +61,9 @@ $ npm run start
 | :---------------------------------------: | :---------: | :--------: |
 |              Read User By Id              |     GET     |  /users/   |
 |              Create New User              |    POST     |  /users/   |
+|                Delete User                |   DELETE    |  /users/   |
 |           Update User SNS List            |     PUT     | /users/sns |
 | Update User Info <br> (nickname, snsList) |     PUT     | /users/:id |
-|                Delete User                |   DELETE    | /users/:id |
 
 <br><br>
 
@@ -84,8 +84,8 @@ $ npm run start
 | :-----------------------: | :---------: | :----------: |
 | Read Project By projectId |     GET     | /project/:id |
 |    Create New Project     |    POST     |  /project/   |
-|      Update Project       |     PUT     | /project/:id |
-|      Delete Project       |   DELETE    | /project/:id |
+|      Update Project       |     PUT     |  /project/   |
+|      Delete Project       |   DELETE    |  /project/   |
 
 <br><br>
 
@@ -222,13 +222,17 @@ API URL: /users/:id
 
 <br>
 
-|            고쳐야할 부분            |                Status                |
-| :---------------------------------: | :----------------------------------: |
-|            1. URL 고치기            |           ✅ (2022.09.13)            |
-| 2-1. Service 기능단위로 분할 시키기 | ✅ <br>Users(2022.09.14 ~2022.09.18) |
-| 2-2. Database 기능단위로 분할시키기 |               ✅ <br>                |
-|  3. Controller의 역할에 대한 학습   |                                      |
-| 4. async, await, Promise 대한 학습  |                                      |
+|            고쳐야할 부분            |              Status              |
+| :---------------------------------: | :------------------------------: |
+|            1. URL 고치기            |         ✅ (2022.09.13)          |
+| 2-1. Service 기능단위로 분할 시키기 | ✅ <br>(2022.09.14 ~2022.09.19)  |
+| 2-2. Database 기능단위로 분할시키기 | ✅ (2022.09.18 ~ 2022.09.19)<br> |
+|  3. Controller의 역할에 대한 학습   |                                  |
+| 4. async, await, Promise 대한 학습  |                                  |
+
+- 2022.09.19 : API: Read ProjectRequests (/reqs/list 부분만 아직 리팩토링 미완성)
+
+<br>
 
 #### 🤔 왜 URL을 고쳐야 하나요?
 

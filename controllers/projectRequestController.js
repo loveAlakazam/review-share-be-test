@@ -1,5 +1,4 @@
 import ProjectRequests from "../models/ProjectRequests";
-import Users from "../models/Users";
 import Projects from "../models/Projects";
 import errorMsgs from "../commons/errors";
 import * as service from "../service/projectRequests";

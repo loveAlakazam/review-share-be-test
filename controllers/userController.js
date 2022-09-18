@@ -1,7 +1,3 @@
-import Users from "../models/Users";
-import ProjectRequests from "../models/ProjectRequests";
-import Projects from "../models/Projects";
-
 import * as service from "../service/users";
 import * as prjService from "../service/projects";
 import * as prjReqService from "../service/projectRequests";
@@ -132,7 +128,7 @@ export const deleteUserByIdController = async (req, res) => {
       return res.status(400).json(errorMsgs.EMPTY_USER_ID);
     }
 
-    const user = await Users.findById(userId);
+    const user = await service.findUserById(userId);
     if (!user) {
       return res.status(404).json(errorMsgs.NOT_FOUND_USER_ID);
     }

@@ -1,7 +1,5 @@
 import * as repository from "../repository/users";
-import errorMsgs from "../commons/errors";
 import SNS_LIST from "../commons/snsList";
-import Users from "../models/Users";
 
 export const findUserById = async (userId) => {
   try {
