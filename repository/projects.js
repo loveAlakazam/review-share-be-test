@@ -63,3 +63,14 @@ export const deleteUserIdFromRequestUserList = async (userId, projectId) => {
     throw error;
   }
 };
+
+export const deleteUserIdFromAllRequestUserList = async (userId) => {
+  try {
+    return await Projects.updateMany(
+      { requestUserList: userId },
+      { $pull: { requestUserList: userId } }
+    );
+  } catch (error) {
+    throw error;
+  }
+};

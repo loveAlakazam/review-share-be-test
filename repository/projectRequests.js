@@ -49,3 +49,19 @@ export const deleteProjectRequestById = async (prjReqId) => {
     throw error;
   }
 };
+
+export const findProjectRequestByUserId = async (userId) => {
+  try {
+    return await ProjectRequests.find({ user: userId });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteProjectRequestsByUserId = async (userId) => {
+  try {
+    return await ProjectRequests.deleteMany({ user: userId });
+  } catch (error) {
+    throw error;
+  }
+};

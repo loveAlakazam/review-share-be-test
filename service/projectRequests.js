@@ -82,3 +82,19 @@ export const deleteProjectRequest = async (userId, projectId) => {
     throw error;
   }
 };
+
+export const findProjectRequestsByUserId = async (userId) => {
+  try {
+    return await repository.findProjectRequestByUserId(userId);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteProjectRequestsByUserId = async (userId) => {
+  try {
+    await repository.deleteProjectRequestsByUserId(userId);
+  } catch (error) {
+    throw error;
+  }
+};

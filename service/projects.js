@@ -68,3 +68,11 @@ export const checkUserIdInRequestUserList = (project, userId) => {
   // 프로젝트의 requestUserList필드 안에 userId가 있는지 확인
   return project.requestUserList.includes(userId);
 };
+
+export const deleteUserIdFromAllRequestUserList = async (userId) => {
+  try {
+    await repository.deleteUserIdFromAllRequestUserList(userId);
+  } catch (error) {
+    throw error;
+  }
+};

@@ -3,6 +3,8 @@ import ProjectRequests from "../models/ProjectRequests";
 import Projects from "../models/Projects";
 
 import * as service from "../service/users";
+import * as prjService from "../service/projects";
+import * as prjReqService from "../service/projectRequests";
 import errorMsgs from "../commons/errors";
 
 export const showUserByIdController = async (req, res) => {
@@ -124,42 +126,28 @@ export const updateSnsListController = async (req, res) => {
 
 export const deleteUserByIdController = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { userId } = req.body;
 
-    if (!id) {
+    if (!userId) {
       return res.status(400).json(errorMsgs.EMPTY_USER_ID);
     }
 
-    const user = Users.findById(id);
+    const user = await Users.findById(userId);
     if (!user) {
       return res.status(404).json(errorMsgs.NOT_FOUND_USER_ID);
     }
 
-    let query = { user: id };
-    const prjReqList = await ProjectRequests.find(query);
-    if (prjReqList.length) {
-      // 해당 유저아이디가 포함되어있는 projectRequest들을 삭제합니다.
-      await ProjectRequests.deleteMany({ user: id });
+    //1. project의 requestUserList 에서 해당 유저아이디를 제외시킵니다.
+    await prjService.deleteUserIdFromAllRequestUserList(userId);
+
+    // 2. 프로젝트 리스트 삭제
+    const prjReqList = await prjReqService.findProjectRequestsByUserId(userId);
+    if (prjReqList.length > 0) {
+      await prjReqService.deleteProjectRequestsByUserId(userId);
     }
 
-    // project의 requestUserList 에서 해당 유저아이디를 제외시킵니다.
-    query = { requestUserList: { $in: [id] } };
-    const prjList = await Projects.find(query);
-    if (prjList.length) {
-      prjList.map((prj) => {
-        // 각 프로젝트 정보에서 requestUserList 에서 탈퇴유저아이디를 제외시킵니다.
-        const _prjReqUserList = prj.requestUserList;
-        prj.requestUserList = _prjReqUserList.filter((userId) => {
-          // == (Equal Operator)을 사용하여
-          // userId(type: ObjectId) 와 id(string) 데이터타입 상관없이 값자체만으로 비교합니다
-          return userId != id;
-        });
-        prj.save();
-      });
-    }
-
-    // 해당 유저를 삭제합니다.
-    await Users.deleteOne({ _id: id });
+    // 3. 해당 유저를 삭제합니다.
+    await service.deleteUser(userId);
 
     res.status(204).end();
   } catch (error) {

@@ -54,11 +54,17 @@ export const checkSnsList = (snsListStr) => {
 export const updateSnsList = async (userId, snsList) => {
   try {
     // snsList 컬럼 업데이트
-    repository.updateSnsList(userId, snsList);
+    await repository.updateSnsList(userId, snsList);
     return;
   } catch (error) {
     throw error;
   }
 };
 
-export const deleteUser = async (userId) => {};
+export const deleteUser = async (userId) => {
+  try {
+    await repository.deleteUser(userId);
+  } catch (error) {
+    throw error;
+  }
+};
