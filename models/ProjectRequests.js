@@ -16,6 +16,6 @@ const projectRequestSchema = mongoose.Schema({
 const ProjectRequests = mongoose.model(
   "ProjectRequest",
   projectRequestSchema,
-  "projectrequests"
+  "projectRequests"
 );
 export default ProjectRequests;

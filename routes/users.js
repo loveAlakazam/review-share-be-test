@@ -1,25 +1,25 @@
 import { Router } from "express";
 import {
-  showUserById,
-  createNewUser,
-  updateUserInfo,
-  deleteUserById,
-  updateSnsList,
+  showUserByIdController,
+  createNewUserController,
+  updateUserInfoController,
+  deleteUserByIdController,
+  updateSnsListController,
 } from "../controllers/userController";
 
 const router = Router();
 
 // 유저 생성
-router.post("/", createNewUser);
-
-// 유저 정보 수정
-router.put("/sns", updateSnsList);
-router.put("/:id", updateUserInfo);
-
-// 유저삭제
-router.delete("/:id", deleteUserById);
+router.post("/", createNewUserController);
 
 // 유저 조회
-router.get("/", showUserById);
+router.get("/", showUserByIdController);
+
+// 유저삭제
+router.delete("/", deleteUserByIdController);
+
+// 유저 정보 수정
+router.put("/sns", updateSnsListController);
+router.put("/:id", updateUserInfoController);
 
 export default router;

@@ -8,12 +8,12 @@ import { join } from "path";
 import { config } from "dotenv";
 import app from "./app.js";
 
-// use dotenv(.env)
-config({ path: join(__dirname, "./configs/.env") });
-
+config();
 // run server
 let PORT = 6500;
-if (process.env.NODE_ENV === "dev") {
+console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV === "development") {
+  // use dotenv(.env)
   PORT = process.env.PORT;
 }
 const runServerHandling = () => {
