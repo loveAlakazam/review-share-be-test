@@ -1,9 +1,13 @@
 import * as repository from "../repository/users";
 import errorMsgs from "../commons/errors";
+import SNS_LIST from "../commons/snsList";
+import Users from "../models/Users";
 
-export const showUserById = async (userId) => {
+export const findUserById = async (userId) => {
   try {
-    return await repository.findUserById(userId);
+    // 유저조회
+    const user = await repository.findUserById(userId);
+    return user;
   } catch (error) {
     throw error;
   }
@@ -19,37 +23,38 @@ export const createNewUser = async (nickname, birthOfYears) => {
 
 export const updateUserInfo = async (userId, snsList, nickname) => {
   try {
-    // snsList 체크
-    const _snsList = repository.checkSnsList(snsList);
-    if (!_snsList.length) {
-      return errorMsgs.NOT_ALLOW_SNSLIST;
-    }
-
-    // 유저조회
-    const user = await repository.findUserById(userId);
-    console.log(user);
-    if (!user) {
-      return errorMsgs.NOT_FOUND_USER;
-    }
-
     // 유저정보 수정
-    await repository.updateUserInfo(userId, nickname, _snsList);
+    await repository.updateUserInfo(userId, nickname, snsList);
     return;
   } catch (error) {
     throw error;
   }
 };
 
+export const splitSnsList = (snsListStr) => {
+  let splitInputSNSList = snsListStr.split(",").map((e) => e.trim());
+
+  // 요소의 중복을 막기 위해 set으로 변환하고 다시 array로 타입변경합니다.
+  splitInputSNSList = Array.from(new Set(splitInputSNSList));
+  return splitInputSNSList;
+};
+
+export const checkSnsList = (snsListStr) => {
+  const splitInputSNSList = splitSnsList(snsListStr);
+  let result = true;
+
+  splitInputSNSList.forEach((sns) => {
+    const r = SNS_LIST.includes(sns);
+    result = result && r;
+  });
+
+  return result;
+};
+
 export const updateSnsList = async (userId, snsList) => {
   try {
-    // snsList 체크
-    const _snsList = repository.checkSnsList(snsList);
-    if (!_snsList.length) {
-      return errorMsgs.NOT_ALLOW_SNSLIST;
-    }
-
     // snsList 컬럼 업데이트
-    repository.updateSnsList(userId, _snsList);
+    repository.updateSnsList(userId, snsList);
     return;
   } catch (error) {
     throw error;

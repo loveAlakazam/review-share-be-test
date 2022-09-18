@@ -1,5 +1,4 @@
 import Users from "../models/Users";
-import mongoose from "mongoose";
 import ProjectRequests from "../models/ProjectRequests";
 import Projects from "../models/Projects";
 
@@ -9,7 +8,8 @@ import errorMsgs from "../commons/errors";
 export const showUserByIdController = async (req, res) => {
   try {
     const { userId } = req.query;
-    const userData = await service.showUserById(userId);
+
+    const userData = await service.findUserById(userId);
 
     if (!userData) {
       return res.status(404).json(errorMsgs.NOT_FOUND_USER_ID);
@@ -44,18 +44,32 @@ export const updateUserInfoController = async (req, res) => {
     const { snsList, nickname } = req.body;
 
     if (!id) {
-      return res.status(400).json(errorMsgs.NOT_FOUND_USER_ID);
+      return res.status(404).json(errorMsgs.NOT_FOUND_USER_ID);
     }
 
     if (!snsList) {
-      return res.status(400).json();
+      return res.status(400).json(errorMsgs.EMPTY_SNSLIST);
     }
 
     if (!nickname) {
-      return res.status(400).json();
+      return res.status(400).json(errorMsgs.EMPTY_NICKNAME);
     }
 
-    const errMsg = await service.updateUserInfo(id, snsList, nickname);
+    // 유저조회
+    const user = await service.findUserById(id);
+    if (!user) {
+      return res.status(400).json(errorMsgs.NOT_FOUND_USER_ID);
+    }
+
+    // snsList 체크
+    const isAvailableSNSList = service.checkSnsList(snsList);
+    if (!isAvailableSNSList) {
+      return res.status(400).json(errorMsgs.NOT_ALLOW_SNSLIST);
+    }
+
+    // update userInfo
+    const _snsList = service.splitSnsList(snsList);
+    const errMsg = await service.updateUserInfo(id, _snsList, nickname);
     if (errMsg) {
       return res.status(400).json(errMsg);
     }
@@ -80,7 +94,21 @@ export const updateSnsListController = async (req, res) => {
       return res.status(400).json(errorMsgs.EMPTY_SNSLIST);
     }
 
-    const errMsg = await service.updateSnsList(userId, snsList);
+    // 유저조회
+    const user = await service.findUserById(userId);
+    if (!user) {
+      return res.status(400).json(errorMsgs.NOT_FOUND_USER_ID);
+    }
+
+    // snsList체크
+    const isAvailableSNSList = service.checkSnsList(snsList);
+    if (!isAvailableSNSList) {
+      return res.status(400).json(errorMsgs.NOT_ALLOW_SNSLIST);
+    }
+
+    // 유저 snsList 정보 수정
+    const _snsList = service.splitSnsList(snsList);
+    const errMsg = await service.updateSnsList(userId, _snsList);
     if (errMsg) {
       return res.status(400).json(errMsg);
     }

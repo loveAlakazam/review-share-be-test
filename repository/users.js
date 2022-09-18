@@ -19,14 +19,6 @@ export const createNewUser = async (nickname, birthOfYears) => {
   }
 };
 
-export const checkSnsList = (snsList) => {
-  try {
-    return Users.checkSnsList(snsList);
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const updateUserInfo = async (userId, nickname, snsList) => {
   try {
     return await Users.updateOne(
