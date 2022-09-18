@@ -1,5 +1,6 @@
 import Users from "../models/Users";
 import * as repository from "../repository/users";
+import errorMsgs from "../commons/errors";
 
 export const showUserById = async (userId) => {
   try {
@@ -22,20 +23,38 @@ export const updateUserInfo = async (userId, snsList, nickname) => {
     // snsList 체크
     const _snsList = repository.checkSnsList(snsList);
     if (!_snsList.length) {
-      return { message: "snsList는 Instagram 또는 NaverBlog를 입력해주세요!" };
+      return errorMsgs.NOT_ALLOW_SNSLIST;
     }
 
     // 유저조회
     const user = await repository.findUserById(userId);
     console.log(user);
     if (!user) {
-      return { message: "존재하지 않는 유저입니다." };
+      return errorMsgs.NOT_FOUND_USER;
     }
 
     // 유저정보 수정
-    await repository.updateUserInfoBySave(user, nickname, _snsList);
+    await repository.updateUserInfo(userId, nickname, _snsList);
     return;
   } catch (error) {
     throw error;
   }
 };
+
+export const updateSnsList = async (userId, snsList) => {
+  try {
+    // snsList 체크
+    const _snsList = repository.checkSnsList(snsList);
+    if (!_snsList.length) {
+      return errorMsgs.NOT_ALLOW_SNSLIST;
+    }
+
+    // snsList 컬럼 업데이트
+    repository.updateSnsList(userId, _snsList);
+    return;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteUser = async (userId) => {};

@@ -27,11 +27,24 @@ export const checkSnsList = (snsList) => {
   }
 };
 
-export const updateUserInfoBySave = async (userId, nickname, snsList) => {
+export const updateUserInfo = async (userId, nickname, snsList) => {
   try {
     return await Users.updateOne(
       { $eq: { id: userId } },
       { $set: { nickname: nickname, snsList: snsList } }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateSnsList = async (userId, snsList) => {
+  try {
+    return await Users.updateOne(
+      {
+        $eq: { id: userId },
+      },
+      { $set: { snsList: snsList } }
     );
   } catch (error) {
     throw error;

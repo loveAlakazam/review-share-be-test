@@ -4,6 +4,7 @@ import ProjectRequests from "../models/ProjectRequests";
 import Projects from "../models/Projects";
 
 import * as service from "../service/users";
+import errorMsgs from "../commons/errors";
 
 export const showUserByIdController = async (req, res) => {
   try {
@@ -11,7 +12,7 @@ export const showUserByIdController = async (req, res) => {
     const userData = await service.showUserById(userId);
 
     if (!userData) {
-      return res.status(404).json({ message: "유저가 존재하지 않습니다." });
+      return res.status(404).json(errorMsgs.NOT_FOUND_USER_ID);
     }
 
     return res.status(200).json({ user: userData });
@@ -43,30 +44,20 @@ export const updateUserInfoController = async (req, res) => {
     const { snsList, nickname } = req.body;
 
     if (!id) {
-      return res
-        .status(400)
-        .json({ message: "유저 아이디 값이 존재하지 않습니다." });
+      return res.status(400).json(errorMsgs.NOT_FOUND_USER_ID);
     }
 
     if (!snsList) {
-      return res.status(400).json({ message: "snsList를 입력해주세요!" });
+      return res.status(400).json();
     }
 
     if (!nickname) {
-      return res.status(400).json({ message: "nickname를 입력해주세요!" });
+      return res.status(400).json();
     }
 
-    // const _snsList = Users.checkSnsList(snsList);
-    // if (!_snsList.length) {
-    //   return res.status(404).json({
-    //     message: "snsList는 Instagram 또는 NaverBlog를 입력해주세요!",
-    //   });
-    // }
-
-    // const user = await Users.findById(id);
-    const errorMsg = await service.updateUserInfo(id, snsList, nickname);
-    if (errorMsg) {
-      return res.status(400).json(errorMsg);
+    const errMsg = await service.updateUserInfo(id, snsList, nickname);
+    if (errMsg) {
+      return res.status(400).json(errMsg);
     }
 
     return res.status(204).end();
@@ -81,23 +72,18 @@ export const updateUserInfoController = async (req, res) => {
 export const updateSnsListController = async (req, res) => {
   try {
     const { userId, snsList } = req.body;
-    console.log(userId, snsList);
-    if (!userId || !snsList) {
-      return res
-        .status(400)
-        .json({ message: "userId, snsList 데이터가 비어있습니다." });
+
+    if (!userId) {
+      return res.status(400).json(errorMsgs.EMPTY_USER_ID);
+    }
+    if (!snsList) {
+      return res.status(400).json(errorMsgs.EMPTY_SNSLIST);
     }
 
-    const _snsList = Users.checkSnsList(snsList);
-    if (!_snsList.length) {
-      return res.status(400).json({
-        message: "입력한 sns 로 유저의 snsList에 등록할 수 없습니다.",
-      });
+    const errMsg = await service.updateSnsList(userId, snsList);
+    if (errMsg) {
+      return res.status(400).json(errMsg);
     }
-
-    // snsList 컬럼 업데이트
-
-    await Users.updateOne({ _id: userId }, { snsList: _snsList });
 
     res.status(204).end();
   } catch (error) {
@@ -113,16 +99,12 @@ export const deleteUserByIdController = async (req, res) => {
     const { id } = req.params;
 
     if (!id) {
-      return res
-        .status(400)
-        .json({ message: "userId 데이터가 누락되었습니다." });
+      return res.status(400).json(errorMsgs.EMPTY_USER_ID);
     }
 
     const user = Users.findById(id);
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: "해당 아이디의 유저를 찾을 수 없습니다." });
+      return res.status(404).json(errorMsgs.NOT_FOUND_USER_ID);
     }
 
     let query = { user: id };
