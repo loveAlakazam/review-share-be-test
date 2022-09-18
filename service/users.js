@@ -1,4 +1,3 @@
-import Users from "../models/Users";
 import * as repository from "../repository/users";
 import errorMsgs from "../commons/errors";
 

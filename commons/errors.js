@@ -1,5 +1,6 @@
 // 에러 메시지를 출력
 const errorMsgs = {
+  // USERS
   NOT_ALLOW_SNSLIST: {
     code: 400,
     message: "Instagram 또는 NaverBlog를 입력해주세요.",
@@ -12,6 +13,10 @@ const errorMsgs = {
     code: 404,
     message: "존재하지 않는 유저입니다.",
   },
+
+  // PROJECTS
+
+  // PROJECT-REQUEST
 };
 
 export default errorMsgs;
