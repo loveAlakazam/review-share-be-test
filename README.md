@@ -33,11 +33,11 @@ $ npm run start
 
 - 🔧 코드리뷰 이후 API URL 수정 (2022.09.13)
 
-|         API 명         | HTTP Method |   API URL   |
-| :--------------------: | :---------: | :---------: |
-| Create ProjectRequests |    POST     | /req/create |
-| Delete ProjectRequests |   DELETE    | /req/delete |
-|  Read ProjectRequests  |     GET     |  /req/list  |
+|         API 명         | HTTP Method |  API URL  |
+| :--------------------: | :---------: | :-------: |
+| Create ProjectRequests |    POST     |   /req/   |
+| Delete ProjectRequests |   DELETE    |   /req/   |
+|  Read ProjectRequests  |     GET     | /req/list |
 
 <br><br>
 
@@ -61,9 +61,9 @@ $ npm run start
 | :---------------------------------------: | :---------: | :--------: |
 |              Read User By Id              |     GET     |  /users/   |
 |              Create New User              |    POST     |  /users/   |
+|                Delete User                |   DELETE    |  /users/   |
 |           Update User SNS List            |     PUT     | /users/sns |
 | Update User Info <br> (nickname, snsList) |     PUT     | /users/:id |
-|                Delete User                |   DELETE    | /users/:id |
 
 <br><br>
 
@@ -80,12 +80,12 @@ $ npm run start
 
 - 🔧 코드리뷰 이후 API URL 수정 (2022.09.13)
 
-|          API 명           | HTTP Method |       API URL       |
-| :-----------------------: | :---------: | :-----------------: |
-| Read Project By projectId |     GET     |    /project/:id     |
-|    Create New Project     |    POST     |   /project/create   |
-|      Update Project       |     PUT     | /project/update/:id |
-|      Delete Project       |   DELETE    | /project/delete/:id |
+|          API 명           | HTTP Method |   API URL    |
+| :-----------------------: | :---------: | :----------: |
+| Read Project By projectId |     GET     | /project/:id |
+|    Create New Project     |    POST     |  /project/   |
+|      Update Project       |     PUT     |  /project/   |
+|      Delete Project       |   DELETE    |  /project/   |
 
 <br><br>
 
@@ -171,7 +171,7 @@ API URL: /users/:id
 감사합니다.
 ```
 
-<br>
+<br><br>
 
 2022년 9월 6일에 불합격을 받았습니다. 결과를 받을 당시에는 조금 섭섭함도 있었고, 아쉬움도 있었습니다.
 
@@ -197,11 +197,11 @@ API URL: /users/:id
 
 메일에서는 정답일 수 없다고는 말씀하셨지만
 
-저보다 Node.js와 Express 기반의 백엔드 경험이 많으신분이기 때문에 리뷰쉐어팀의 코드리뷰가 필요했습니다.
+저보다 Node.js와 Express 기반의 백엔드 경험이 많기 때문에 리뷰쉐어팀의 코드리뷰가 필요했습니다.
 
 제가 리뷰를 받으면서 느낀건, 서비스 로직의 흐름을 활용하는 능력이 부족하다는 것을 알았습니다.
 
-단순히 기간내에 구현을 목적으로 한 것 같아서, 코드 아키텍쳐도 생각하지 못한 점이 아쉬었습니다.
+단순히 기간내에 제출을 목적으로 한 것 같아서, 코드 아키텍쳐도 생각하지 못한 점이 아쉬었습니다.
 
 요청에 대한 인증/ DB접근/ 핵심 서비스 로직들이 모두 컨트롤러 내부에 위치하고 있다는 것을 짚어주신부분에서
 컨트롤러의 역할에 대한 이해와 코드의 기능단위를 쪼개서 분할시키지 못한 것을 보완이 필요하다는 것을 깨달았습니다.
@@ -222,13 +222,17 @@ API URL: /users/:id
 
 <br>
 
-|            고쳐야할 부분            | Status |
-| :---------------------------------: | :----: |
-|            1. URL 고치기            |        |
-| 2-1. Service 기능단위로 분할 시키기 |        |
-| 2-2. Database 기능단위로 분할시키기 |        |
-|  3. Controller의 역할에 대한 학습   |        |
-| 4. async, await, Promise 대한 학습  |        |
+|            고쳐야할 부분            |              Status              |
+| :---------------------------------: | :------------------------------: |
+|            1. URL 고치기            |         ✅ (2022.09.13)          |
+| 2-1. Service 기능단위로 분할 시키기 | ✅ <br>(2022.09.14 ~2022.09.19)  |
+| 2-2. Database 기능단위로 분할시키기 | ✅ (2022.09.18 ~ 2022.09.19)<br> |
+|  3. Controller의 역할에 대한 학습   |                                  |
+| 4. async, await, Promise 대한 학습  |                                  |
+
+- 2022.09.19 : API: Read ProjectRequests (/reqs/list 부분만 아직 리팩토링 미완성)
+
+<br>
 
 #### 🤔 왜 URL을 고쳐야 하나요?
 
@@ -250,7 +254,7 @@ API URL: /users/:id
 
 HTTP 응답은 주문이 성공적으로 수행되었는지 여부를 나타냅니다.
 
-**리소스 URI는 동사(리소스에 대한 작업) 이 아닌 명사(리소스)를 기반으로 해야합니다.**
+리소스 URI는 동사(리소스에 대한 작업) 이 아닌 명사(리소스)를 기반으로 해야합니다.
 ```
 
 - [참조: Microsoft Azure REST API Design ](https://docs.microsoft.com/ko-kr/azure/architecture/best-practices/api-design)
@@ -289,3 +293,9 @@ HTTP 응답은 주문이 성공적으로 수행되었는지 여부를 나타냅�
 |     1. JEST를 활용하여 테스트 코드 작성(controller/service/database)      |        |
 |                 2. Github Actions로 빌드 후 Heroku에 배포                 |   ✅   |
 | 3. 로컬호스트가 아닌 헤로쿠에서 발급된 DNS주소로 API 통신테스트 성공 하기 |        |
+
+<br>
+
+### 에러핸들링
+
+중복된 에러메시지가 존재해서, 중복된 메시지를 직접 입력할 필요없이 errorMsgs 객체 안에 있는 key값을 해당 key에 대응하는 메시지를 불러와서 에러메시지 핸들링을 하도록 수정하였습니다.

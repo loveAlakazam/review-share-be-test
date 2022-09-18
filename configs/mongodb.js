@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 import { MONGODB_URI_DEV } from "./dev";
 import { config } from "dotenv";
 import { join } from "path";
-config({ path: join(__dirname, "./.env") });
 
+config();
 const handleOpen = () => {
   console.log("✅ Success to connect mongodb");
 };
@@ -12,7 +12,7 @@ const handleError = (error) => {
 };
 
 let MONGODB_URI = process.env.MONGODB_URI;
-if (process.env.NODE_ENV === "dev") {
+if (process.env.NODE_ENV === "development") {
   MONGODB_URI = MONGODB_URI_DEV;
 }
 
