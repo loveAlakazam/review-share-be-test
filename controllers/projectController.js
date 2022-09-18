@@ -2,20 +2,19 @@ import Projects from "../models/Projects";
 import ProjectRequests from "../models/ProjectRequests";
 import Users from "../models/Users";
 
+import errorMsgs from "../commons/errors";
+import * as service from "../service/projects";
+
 export const getProjectInfo = async (req, res) => {
   try {
     const { id } = req.params;
     if (!id) {
-      return res
-        .status(400)
-        .json({ message: "조회하려는 projectId가 존재하지 않습니다!" });
+      return res.status(400).json(errorMsgs.EMPTY_PROJECT_ID);
     }
 
-    const project = await Projects.findById(id);
+    const project = await service.getProjectInfo(id);
     if (!project) {
-      return res.status(404).json({
-        message: "해당 projectId에 대응되는 프로젝트가 존재하지 않습니다.",
-      });
+      return res.status(404).json(errorMsgs.NOT_FOUND_PROJECT);
     }
 
     return res.status(200).json({
@@ -33,25 +32,21 @@ export const getProjectInfo = async (req, res) => {
 export const createNewProject = async (req, res) => {
   try {
     const { title, sns } = req.body;
-    if (!title || !sns) {
-      return res
-        .status(400)
-        .json({ message: "title과 sns 모두 데이터가 필요합니다." });
+    if (!title) {
+      return res.status(400).json(errorMsgs.EMPTY_TITLE);
+    }
+    if (!sns) {
+      return res.status(400).json(errorMsgs.EMPTY_PRJ_SNS);
     }
 
-    const snsAvailable = Projects.checkProjectSNS(sns);
+    // sns 체크
+    const snsAvailable = service.checkProjectSNS(sns);
     if (!snsAvailable) {
-      // sns 가 Instagram/NaverBlog 가 아니라면
-      return res.status(400).json({
-        message: "입력한 sns는 NaverBlog 와 Instagram 외의 sns 입니다.",
-      });
+      return res.status(400).json(errorMsgs.NOT_ALLOW_SNS(sns));
     }
 
-    await Projects.create({
-      title,
-      sns,
-    });
-
+    // 프로젝트 등록
+    service.createNewProject(title, sns);
     return res.status(204).end();
   } catch (error) {
     console.log(error);
@@ -64,28 +59,33 @@ export const createNewProject = async (req, res) => {
 
 export const updateProject = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { title, sns } = req.body;
-    if (!id) {
-      return res
-        .status(400)
-        .json({ message: "조회하려는 projectId가 존재하지 않습니다!" });
+    const { prjId, title, sns } = req.body;
+    if (!prjId) {
+      return res.status(400).json(errorMsgs.EMPTY_PROJECT_ID);
     }
 
-    if (!title || !sns) {
-      return res
-        .status(400)
-        .json({ message: "title과 sns 모두 데이터가 필요합니다." });
+    if (!title) {
+      return res.status(400).json(errorMsgs.EMPTY_TITLE);
     }
 
-    const isAvailableSNS = Projects.checkProjectSNS(sns);
+    if (!sns) {
+      return res.status(400).json(errorMsgs.EMPTY_PRJ_SNS);
+    }
+
+    //프로젝트가 존재하는지 확인
+    const project = await service.getProjectInfo(prjId);
+    if (!project) {
+      return res.status(400).json(errorMsgs.NOT_FOUND_PROJECT);
+    }
+
+    // sns체크
+    const isAvailableSNS = service.checkProjectSNS(sns);
     if (!isAvailableSNS) {
-      return res.status(400).json({
-        message: "입력한 sns는 NaverBlog 와 Instagram 외의 sns 입니다.",
-      });
+      return res.status(400).json(errorMsgs.NOT_ALLOW_SNS(sns));
     }
 
-    await Projects.updateOne({ _id: id }, { $set: { title: title, sns: sns } });
+    // 프로젝트 업데이트
+    await service.updateProject(prjId, title, sns);
 
     return res.status(204).end();
   } catch (error) {
@@ -99,21 +99,21 @@ export const updateProject = async (req, res) => {
 
 export const deleteProject = async (req, res) => {
   try {
-    const { id } = req.params;
-    if (!id) {
+    const { prjId } = req.query;
+    if (!prjId) {
       return res
         .status(400)
         .json({ message: "조회하려는 projectId가 존재하지 않습니다!" });
     }
 
-    const project = await Projects.findById(id);
+    const project = await Projects.findById(prjId);
     if (!project) {
       return res.status(404).json({
         message: "해당 projectId에 대응하는 프로젝트가 존재하지 않습니다.",
       });
     }
 
-    const projectRequestList = await ProjectRequests.find({ project: id });
+    const projectRequestList = await ProjectRequests.find({ project: prjId });
     console.log(projectRequestList);
     if (projectRequestList.length) {
       projectRequestList.map(async (prjReq) => {

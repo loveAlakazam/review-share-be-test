@@ -12,10 +12,10 @@ const router = express.Router();
 router.post("/", createNewProject);
 
 // 프로젝트 수정
-router.put("/:id", updateProject);
+router.put("/", updateProject);
 
 // 프로젝트 삭제
-router.delete("/:id", deleteProject);
+router.delete("/", deleteProject);
 
 // 프로젝트 조회
 router.get("/:id", getProjectInfo);
