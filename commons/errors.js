@@ -13,6 +13,13 @@ const errorMsgs = {
     code: 404,
     message: "존재하지 않는 유저입니다.",
   },
+  NOT_HAVE_SNSLIST: {
+    code: 400,
+    message: "신청자는 sns를 갖고 있지 않습니다.",
+  },
+  NOT_HAVE_PROJECT_SNS: (sns) => {
+    return { code: 400, message: `신청자는 ${sns} 계정을 갖고 있지 않습니다.` };
+  },
 
   // PROJECTS
   EMPTY_TITLE: { code: 400, message: "title 을 입력해주세요." },
@@ -28,6 +35,18 @@ const errorMsgs = {
   },
 
   // PROJECT-REQUEST
+  ALEADY_REQUESTED: {
+    code: 400,
+    message: "이미 해당 프로젝트를 신청하였습니다.",
+  },
+  EMPTY_MESSAGE: {
+    code: 400,
+    message: "프로젝트 요청 시 메시지를 반드시 입력 해야됩니다.",
+  },
+  NOT_FOUND_PROJECT_REQUEST: {
+    code: 404,
+    message: "ProjectRequest 가 존재하지 않습니다.",
+  },
 };
 
 export default errorMsgs;

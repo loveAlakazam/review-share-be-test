@@ -1,7 +1,3 @@
-import Projects from "../models/Projects";
-import ProjectRequests from "../models/ProjectRequests";
-import Users from "../models/Users";
-
 import errorMsgs from "../commons/errors";
 import * as service from "../service/projects";
 
@@ -12,7 +8,7 @@ export const getProjectInfo = async (req, res) => {
       return res.status(400).json(errorMsgs.EMPTY_PROJECT_ID);
     }
 
-    const project = await service.getProjectInfo(id);
+    const project = await service.findProjectById(id);
     if (!project) {
       return res.status(404).json(errorMsgs.NOT_FOUND_PROJECT);
     }
@@ -59,8 +55,8 @@ export const createNewProject = async (req, res) => {
 
 export const updateProject = async (req, res) => {
   try {
-    const { prjId, title, sns } = req.body;
-    if (!prjId) {
+    const { projectId, title, sns } = req.body;
+    if (!projectId) {
       return res.status(400).json(errorMsgs.EMPTY_PROJECT_ID);
     }
 
@@ -73,7 +69,7 @@ export const updateProject = async (req, res) => {
     }
 
     //프로젝트가 존재하는지 확인
-    const project = await service.getProjectInfo(prjId);
+    const project = await service.findProjectById(projectId);
     if (!project) {
       return res.status(400).json(errorMsgs.NOT_FOUND_PROJECT);
     }
@@ -85,7 +81,7 @@ export const updateProject = async (req, res) => {
     }
 
     // 프로젝트 업데이트
-    await service.updateProject(prjId, title, sns);
+    await service.updateProject(projectId, title, sns);
 
     return res.status(204).end();
   } catch (error) {
@@ -99,44 +95,28 @@ export const updateProject = async (req, res) => {
 
 export const deleteProject = async (req, res) => {
   try {
-    const { prjId } = req.query;
-    if (!prjId) {
-      return res
-        .status(400)
-        .json({ message: "조회하려는 projectId가 존재하지 않습니다!" });
+    const { projectId } = req.body;
+    if (!projectId) {
+      return res.status(400).json(errorMsgs.EMPTY_PROJECT_ID);
     }
 
-    const project = await Projects.findById(prjId);
+    // 삭제대상 프로젝트 존재여부 확인
+    const project = await service.findProjectById(projectId);
     if (!project) {
-      return res.status(404).json({
-        message: "해당 projectId에 대응하는 프로젝트가 존재하지 않습니다.",
-      });
+      return res.status(404).json(errorMsgs.NOT_FOUND_PROJECT);
     }
 
-    const projectRequestList = await ProjectRequests.find({ project: prjId });
-    console.log(projectRequestList);
-    if (projectRequestList.length) {
-      projectRequestList.map(async (prjReq) => {
-        const userId = prjReq.user;
-        const user = await Users.findById(userId);
-        if (!user) {
-          return res.status(404).json({ message: "유저가 존재하지 않습니다!" });
-        }
-
-        // 해당프로젝트를 요청한 각 유저의 requestCounts를 감소시킵니다.
-        // (단, requestCountst가 0이면 감소를 하지 않습니다.)
-        if (user.requestCounts > 0) {
-          user.requestCounts -= 1;
-          user.save();
-        }
-      });
-
-      // project가 projectId인 ProjectRequest 들도 같이 삭제
-      await ProjectRequests.deleteMany({ project: id });
+    // 프로젝트 requestUserList의 각 유저 requestCount를 감소
+    const prjRequestUserList = project.requestUserList;
+    if (prjRequestUserList.length > 0) {
+      await service.substactAllUserRequestCounts(prjRequestUserList);
     }
+
+    // 삭제대상 프로젝트의 projectRequests 모두 삭제
+    await service.deleteAllProjectRequests(projectId);
 
     // 해당 projectId의 Project 삭제
-    await Projects.deleteOne({ _id: id });
+    await service.deleteProject(projectId);
     res.status(204).end();
   } catch (error) {
     console.log(error);

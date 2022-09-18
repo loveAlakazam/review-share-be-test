@@ -1,6 +1,6 @@
 import Projects from "../models/Projects";
 
-export const getProjectInfo = async (projectId) => {
+export const findProjectById = async (projectId) => {
   try {
     return await Projects.findById(projectId);
   } catch (error) {
@@ -24,6 +24,40 @@ export const updateProject = async (projectId, title, sns) => {
     return await Projects.updateOne(
       { _id: projectId },
       { $set: { title: title, sns: sns } }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteProject = async (projectId) => {
+  try {
+    return await Projects.deleteOne({ _id: projectId });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addUserIdFromRequestUserList = async (userId, projectId) => {
+  try {
+    await Projects.updateOne(
+      {
+        _id: projectId,
+      },
+      { $push: { requestUserList: userId } }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteUserIdFromRequestUserList = async (userId, projectId) => {
+  try {
+    await Projects.updateOne(
+      {
+        _id: projectId,
+      },
+      { $pull: { requestUserList: { $eq: userId } } }
     );
   } catch (error) {
     throw error;
