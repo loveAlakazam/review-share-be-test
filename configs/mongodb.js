@@ -1,9 +1,6 @@
 import mongoose from "mongoose";
 import { MONGODB_URI_DEV } from "./dev";
-import { config } from "dotenv";
-import { join } from "path";
 
-config();
 const handleOpen = () => {
   console.log("✅ Success to connect mongodb");
 };
